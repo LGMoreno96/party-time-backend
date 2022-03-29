@@ -87,6 +87,35 @@ def dashboard():
     user = User.query.get(user_id)
     return jsonify(user.serialize()), 200
 
+@app.route('/event', methods=['POST'])
+def create_event():
+    body = request.json
+    event = Event.create_event(
+        event_name=body['event_name'],
+        local_name=body['local_name'],
+        type_of_event=body['type_of_event'],
+        description=body['description'],
+        place=body['place'],
+        date=body['date'],
+        schedule=body['schedule'],
+        age=body['age'],
+        parking=body['parking'],
+        number=body['number'],
+        capacity=body['capacity'],
+        photo=body['photo'],
+        location=body['location'],
+        cover=body['cover']
+    )
+    if event is not None:
+        db.session.add(event)
+        try:
+            db.session.commit()
+            return jsonify(event.serialize()), 201
+        except Exception as error:
+            db.session.rollback()
+            return jsonify({"msg":"Ocurrio un error guardando el evento en db"}), 500
+    else:
+        return jsonify({"msg":"Revisa los datos suministrados"}), 401
 
 # this only runs if `$ python src/main.py` is executed
 if __name__ == '__main__':
