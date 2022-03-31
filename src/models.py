@@ -55,14 +55,16 @@ class Event(db.Model):
     description = db.Column(db.String(120))
     place = db.Column(db.String(30))
     date = db.Column(db.String(30))
-    schedule = db.Column(db.String(30))
+    start_time = db.Column(db.String(10))
+    end_time = db.Column(db.String(10))
     age = db.Column(db.String(10))
     parking = db.Column(db.String(10))
     number = db.Column(db.String(30))
     capacity = db.Column(db.String(30))
-    photo = db.Column(db.String(30))
+    photo = db.Column(db.String(500))
     location = db.Column(db.String(30))
     cover = db.Column(db.String(30))
+    email = db.Column(db.String(50))
 
     def serialize(self):
             return {
@@ -73,18 +75,20 @@ class Event(db.Model):
                 "description":self.description,
                 "place":self.place,
                 "date":self.date,
-                "schedule":self.schedule,
+                "start_time":self.start_time,
+                "end_time":self.end_time,
                 "age":self.age,
                 "parking":self.parking,
                 "number":self.number,
                 "capacity":self.capacity,
                 "photo":self.photo,
                 "location":self.location,
-                "cover":self.cover
+                "cover":self.cover,
+                "email":self.email
             }
 
     @classmethod
-    def create_event(cls, event_name, local_name, type_of_event, description, place, date, schedule, age, parking, number, capacity, photo, location, cover):
+    def create_event(cls, event_name, local_name, type_of_event, description, place, date, start_time, end_time, age, parking, number, capacity, photo, location, cover, email):
         event = cls(
             event_name=event_name,
             local_name=local_name,
@@ -92,14 +96,16 @@ class Event(db.Model):
             description=description,
             place=place,
             date=date,
-            schedule=schedule,
+            start_time=start_time,
+            end_time=end_time,
             age=age,
             parking=parking,
             number=number,
             capacity=capacity,
             photo=photo,
             location=location,
-            cover=cover
+            cover=cover,
+            email=email
         )
         if isinstance(event, cls):
             return event

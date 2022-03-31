@@ -8,7 +8,7 @@ from flask_swagger import swagger
 from flask_cors import CORS
 from utils import APIException, generate_sitemap
 from admin import setup_admin
-from models import db, User
+from models import db, User, Event
 #importo flask jwt para aitenticar a los usuarios con un token:
 from flask_jwt_extended import create_access_token, JWTManager, jwt_required, get_jwt_identity
 
@@ -87,6 +87,23 @@ def dashboard():
     user = User.query.get(user_id)
     return jsonify(user.serialize()), 200
 
+@app.route('/events', methods=['GET'])
+def get_events():
+    events = Event.query.all()
+    return jsonify(list(map(
+        lambda event: event.serialize(),
+        events
+    ))), 200
+
+@app.route('/events/<int:id>')
+def handle_one_event(id):
+    event = Event.query.get(id)
+    if event is None:
+        return jsonify({
+            "msg":"Event not found"
+        }), 404
+    return jsonify(event.serialize()), 200
+
 @app.route('/event', methods=['POST'])
 def create_event():
     body = request.json
@@ -97,14 +114,16 @@ def create_event():
         description=body['description'],
         place=body['place'],
         date=body['date'],
-        schedule=body['schedule'],
+        start_time=body['start_time'],
+        end_time=body['end_time'],
         age=body['age'],
         parking=body['parking'],
         number=body['number'],
         capacity=body['capacity'],
         photo=body['photo'],
         location=body['location'],
-        cover=body['cover']
+        cover=body['cover'],
+        email=body['email']
     )
     if event is not None:
         db.session.add(event)
@@ -113,7 +132,7 @@ def create_event():
             return jsonify(event.serialize()), 201
         except Exception as error:
             db.session.rollback()
-            return jsonify({"msg":"Ocurrio un error guardando el evento en db"}), 500
+            return jsonify({"msg":error.args}), 500
     else:
         return jsonify({"msg":"Revisa los datos suministrados"}), 401
 

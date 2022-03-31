@@ -31,7 +31,7 @@ def upgrade():
     sa.Column('parking', sa.String(length=10), nullable=True),
     sa.Column('number', sa.String(length=30), nullable=True),
     sa.Column('capacity', sa.String(length=30), nullable=True),
-    sa.Column('photo', sa.String(length=30), nullable=True),
+    sa.Column('photo', sa.String(length=500), nullable=True),
     sa.Column('location', sa.String(length=30), nullable=True),
     sa.Column('cover', sa.String(length=30), nullable=True),
     sa.PrimaryKeyConstraint('id')
