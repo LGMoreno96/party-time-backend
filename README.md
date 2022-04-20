@@ -1,4 +1,4 @@
-# Servidor de back end con api para aplicación Party Time!
+# Back-end server with API for the Party Time APP!
 
 [![Open in Gitpod](https://gitpod.io/button/open-in-gitpod.svg)](https://gitpod.io/from-referrer/)
 <p align="center">
